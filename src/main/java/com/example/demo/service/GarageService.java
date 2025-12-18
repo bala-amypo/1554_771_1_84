@@ -6,4 +6,5 @@ public class interface GarageService(){
     getGarageByid(Long id);
     getAllGarages();
     deactivateGarage(Long id);
+    
 }
