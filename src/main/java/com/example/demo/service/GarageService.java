@@ -2,5 +2,8 @@
 
 public class interface GarageService(){
     createGarage(Garage garage);
-    updateGarage(long id, )
+    updateGarage(Long id);
+    getGarageByid(Long id);
+    getAllGarages();
+    deactivateGarage(Long id);
 }
