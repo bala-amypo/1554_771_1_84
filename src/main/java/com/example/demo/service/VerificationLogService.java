@@ -1,7 +1,8 @@
 
+package com.example.demo.service;
 
-public interface VerificationLogService(){
-    createLog(VerificationLog log);
-    getLogsFormEntry(Long entryId);
-    getLogById(Long id);  
+import com.example.demo.model.VerificationLog;
+
+public interface VerificationLogService {
+    VerificationLog createLog(VerificationLog log);
 }
