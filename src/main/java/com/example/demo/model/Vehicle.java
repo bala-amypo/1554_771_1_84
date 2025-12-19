@@ -1,27 +1,28 @@
 
 package com.example.demo.model;
 
-import java.security.Timestamp;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "vehicles")
 public class Vehicle {
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String vin;
-    private  String name;
+    private String make;
     private String model;
-    private int year;
-    private long ownerid;
+    private Long ownerId;
     private Boolean active;
-    private Timestamp createdAt;
-    public Vehicle(long id, String vin, String name, String model, int year, long ownerid, Boolean active,
-            Timestamp createdAt) {
-        this.id = id;
+
+    public Vehicle() {}
+
+    public Vehicle(String vin, String make, String model, Long ownerId, Boolean active) {
         this.vin = vin;
-        this.name = name;
+        this.make = make;
         this.model = model;
-        this.year = year;
-        this.ownerid = ownerid;
+        this.ownerId = ownerId;
         this.active = active;
-        this.createdAt = createdAt;
     }
     public Vehicle() {
     }
