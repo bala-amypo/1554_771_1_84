@@ -1,83 +1,79 @@
 package com.example.demo.model;
 
-import java.security.Timestamp;
-import java.sql.Date;
+import jakarta.persistence.*;
+import java.time.LocalDate;
 
-import org.hibernate.mapping.ManyToOne;
-
+@Entity
+@Table(name = "service_entries")
 public class ServiceEntry {
-    private long id;
-    private  ManyToOne  vehicle;
-    private ManyToOne  garage;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    private Vehicle vehicle;
+    @ManyToOne
+    private Garage garage;
     private String serviceType;
-    private Date serviceDate;
+    private LocalDate serviceDate;
     private Integer odometerReading;
-    private String description;
-    private Timestamp recordedAt;
-    
-    public ServiceEntry(long id, ManyToOne vehicle, ManyToOne garage, String serviceType, Date serviceDate,
-            Integer odometerReading, String description, Timestamp recordedAt) {
-        this.id = id;
+
+    public ServiceEntry() {}
+
+    public ServiceEntry(Vehicle vehicle, Garage garage, String serviceType, LocalDate serviceDate, Integer odometerReading) {
         this.vehicle = vehicle;
         this.garage = garage;
         this.serviceType = serviceType;
         this.serviceDate = serviceDate;
         this.odometerReading = odometerReading;
-        this.description = description;
-        this.recordedAt = recordedAt;
     }
-    public ServiceEntry(){
 
-    }
-    public long getId() {
+    public Long getId() {
         return id;
     }
-    public ManyToOne getVehicle() {
+
+    public Vehicle getVehicle() {
         return vehicle;
     }
-    public ManyToOne getGarage() {
+
+    public Garage getGarage() {
         return garage;
     }
+
     public String getServiceType() {
         return serviceType;
     }
-    public Date getServiceDate() {
+
+    public LocalDate getServiceDate() {
         return serviceDate;
     }
+
     public Integer getOdometerReading() {
         return odometerReading;
     }
-    public String getDescription() {
-        return description;
-    }
-    public Timestamp getRecordedAt() {
-        return recordedAt;
-    }
-    public void setId(long id) {
+
+    public void setId(Long id) {
         this.id = id;
     }
-    public void setVehicle(ManyToOne vehicle) {
+
+    public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
-    public void setGarage(ManyToOne garage) {
+
+    public void setGarage(Garage garage) {
         this.garage = garage;
     }
+
     public void setServiceType(String serviceType) {
         this.serviceType = serviceType;
     }
-    public void setServiceDate(Date serviceDate) {
+
+    public void setServiceDate(LocalDate serviceDate) {
         this.serviceDate = serviceDate;
     }
+
     public void setOdometerReading(Integer odometerReading) {
         this.odometerReading = odometerReading;
     }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public void setRecordedAt(Timestamp recordedAt) {
-        this.recordedAt = recordedAt;
-    }
-    
-    
-    
+
+   
 }

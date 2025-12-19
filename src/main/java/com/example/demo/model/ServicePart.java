@@ -1,64 +1,56 @@
 package com.example.demo.model;
 
-import java.math.BigDecimal;
+import jakarta.persistence.*;
 
-import org.hibernate.mapping.ManyToOne;
-
+@Entity
+@Table(name = "service_parts")
 public class ServicePart {
-    private long id;
-    private ManyToOne serviceEntry;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    private ServiceEntry serviceEntry;
     private String partName;
-    private String partNumber;
-    private BigDecimal cost;
-    private int quantity;
-    public ServicePart(long id, ManyToOne serviceEntry, String partName, String partNumber, BigDecimal cost,
-            int quantity) {
-        this.id = id;
+    private Integer quantity;
+
+    public ServicePart() {}
+
+    public ServicePart(ServiceEntry serviceEntry, String partName, Integer quantity) {
         this.serviceEntry = serviceEntry;
         this.partName = partName;
-        this.partNumber = partNumber;
-        this.cost = cost;
         this.quantity = quantity;
     }
-    public long getId() {
+
+    public Long getId() {
         return id;
     }
-    public ManyToOne getServiceEntry() {
+
+    public ServiceEntry getServiceEntry() {
         return serviceEntry;
     }
+
     public String getPartName() {
         return partName;
     }
-    public String getPartNumber() {
-        return partNumber;
-    }
-    public BigDecimal getCost() {
-        return cost;
-    }
-    public int getQuantity() {
+
+    public Integer getQuantity() {
         return quantity;
     }
-    public ServicePart(){
 
-    }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    public void setServiceEntry(ManyToOne serviceEntry) {
+
+    public void setServiceEntry(ServiceEntry serviceEntry) {
         this.serviceEntry = serviceEntry;
     }
+
     public void setPartName(String partName) {
         this.partName = partName;
     }
-    public void setPartNumber(String partNumber) {
-        this.partNumber = partNumber;
-    }
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
-    public void setQuantity(int quantity) {
+
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-    
-    
+
 }

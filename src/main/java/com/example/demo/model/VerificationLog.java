@@ -1,58 +1,50 @@
 package com.example.demo.model;
 
-import java.security.Timestamp;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-import org.hibernate.mapping.ManyToOne;
-
+@Entity
+@Table(name = "verification_logs")
 public class VerificationLog {
-    private long id;
-    private ManyToOne serviceEntry;
-    private Timestamp verifiedAt;
-    private Boolean verifiedBySystem;
-    private String notes;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    private ServiceEntry serviceEntry;
+    private LocalDateTime verifiedAt;
 
-     public VerificationLog(long id, ManyToOne serviceEntry, Timestamp verifiedAt, Boolean verifiedBySystem,
-            String notes) {
-        this.id = id;
+    public VerificationLog() {}
+
+    public VerificationLog(ServiceEntry serviceEntry, LocalDateTime verifiedAt) {
         this.serviceEntry = serviceEntry;
         this.verifiedAt = verifiedAt;
-        this.verifiedBySystem = verifiedBySystem;
-        this.notes = notes;
     }
-    public VerificationLog(){
 
-    }
-    public long getId() {
+    public Long getId() {
         return id;
     }
-    public ManyToOne getServiceEntry() {
+
+    public ServiceEntry getServiceEntry() {
         return serviceEntry;
     }
-    public Timestamp getVerifiedAt() {
+
+    public LocalDateTime getVerifiedAt() {
         return verifiedAt;
     }
-    public Boolean getVerifiedBySystem() {
-        return verifiedBySystem;
-    }
-    public String getNotes() {
-        return notes;
-    }
-    public void setId(long id) {
+
+    public void setId(Long id) {
         this.id = id;
     }
-    public void setServiceEntry(ManyToOne serviceEntry) {
+
+    public void setServiceEntry(ServiceEntry serviceEntry) {
         this.serviceEntry = serviceEntry;
     }
-    public void setVerifiedAt(Timestamp verifiedAt) {
+
+    public void setVerifiedAt(LocalDateTime verifiedAt) {
         this.verifiedAt = verifiedAt;
     }
-    public void setVerifiedBySystem(Boolean verifiedBySystem) {
-        this.verifiedBySystem = verifiedBySystem;
-    }
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
     
-     
+
     
 }
+
