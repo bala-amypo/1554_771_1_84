@@ -1,38 +1,36 @@
 package com.example.demo.model;
 
-import java.sql.Timestamp;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import java.sql.Timestamp;
 
 @Entity
 public class Vehicle {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private int year;
     private Long ownerid;
     private Timestamp createdAt;
-
-    public Vehicle() {
-    }
     private boolean active;
 
-public boolean isActive() {
-    return active;
-}
+    public Vehicle() {}
 
-public void setActive(boolean active) {
-    this.active = active;
-}
-
-    
-    public Vehicle(Long id, String name, int year, Long ownerid, Timestamp createdAt) {
+    public Vehicle(Long id, String name, int year, Long ownerid, Timestamp createdAt, boolean active) {
         this.id = id;
         this.name = name;
         this.year = year;
         this.ownerid = ownerid;
         this.createdAt = createdAt;
+        this.active = active;
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -47,4 +45,7 @@ public void setActive(boolean active) {
 
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }
