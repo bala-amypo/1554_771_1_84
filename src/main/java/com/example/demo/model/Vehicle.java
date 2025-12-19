@@ -12,6 +12,15 @@ public class Vehicle {
 
     public Vehicle() {
     }
+    private boolean active;
+
+public boolean isActive() {
+    return active;
+}
+
+public void setActive(boolean active) {
+    this.active = active;
+}
 
     
     public Vehicle(Long id, String name, int year, Long ownerid, Timestamp createdAt) {
