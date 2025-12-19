@@ -1,7 +1,9 @@
 package com.example.demo.model;
 
 import java.sql.Timestamp;
+import jakarta.persistence.Entity;
 
+@Entity
 public class Vehicle {
 
     private Long id;
