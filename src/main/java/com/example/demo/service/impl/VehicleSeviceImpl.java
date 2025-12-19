@@ -36,3 +36,4 @@ public class VehicleServiceImpl {
         vehicleRepository.deleteById(id);
     }
 }
+
