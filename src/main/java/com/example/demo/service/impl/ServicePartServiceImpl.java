@@ -2,31 +2,37 @@ package com.example.demo.service.impl;
 
 import com.example.demo.exception.EntityNotFoundException;
 import com.example.demo.model.ServicePart;
-import com.example.demo.model.ServiceEntry;
 import com.example.demo.repository.ServicePartRepository;
-import com.example.demo.repository.ServiceEntryRepository;
-import com.example.demo.service.ServicePartService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class ServicePartServiceImpl implements ServicePartService {
+public class ServicePartServiceImpl {
 
-    @Autowired
-    private ServicePartRepository servicePartRepository;
-    @Autowired
-    private ServiceEntryRepository serviceEntryRepository;
+    private final ServicePartRepository servicePartRepository;
 
-    @Override
-    public ServicePart createPart(ServicePart part) {
-        ServiceEntry entry = serviceEntryRepository.findById(part.getServiceEntry().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Service entry not found"));
+    public ServicePartServiceImpl(ServicePartRepository servicePartRepository) {
+        this.servicePartRepository = servicePartRepository;
+    }
 
-        if (part.getQuantity() <= 0) {
-            throw new IllegalArgumentException("Quantity must be positive");
-        }
+    public List<ServicePart> getAllParts() {
+        return servicePartRepository.findAll();
+    }
 
-        part.setServiceEntry(entry);
+    public ServicePart getPartById(Long id) {
+        return servicePartRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Service part not found with id: " + id));
+    }
+
+    public ServicePart savePart(ServicePart part) {
         return servicePartRepository.save(part);
+    }
+
+    public void deletePart(Long id) {
+        if (!servicePartRepository.existsById(id)) {
+            throw new EntityNotFoundException("Service part not found with id: " + id);
+        }
+        servicePartRepository.deleteById(id);
     }
 }
