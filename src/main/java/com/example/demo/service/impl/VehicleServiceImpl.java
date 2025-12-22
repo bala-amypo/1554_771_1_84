@@ -29,12 +29,7 @@ public class VehicleServiceImpl implements VehicleService {
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
     }
 
-    @Override
-    public Vehicle getVehicleByVin(String vin) {
-        // Your Vehicle entity has no vin field, so this cannot really look up by VIN.
-        // For now, throw not found to satisfy the interface.
-        throw new EntityNotFoundException("Vehicle not found");
-    }
+   
 
     @Override
     public List<Vehicle> getVehiclesByOwner(Long ownerid) {
