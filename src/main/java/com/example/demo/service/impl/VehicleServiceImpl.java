@@ -19,7 +19,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Vehicle createVehicle(Vehicle vehicle) {
-        // If you later add a uniqueness rule (e.g., on name+year or a VIN field), enforce it here
+        // No VIN field in your model, so no VIN uniqueness check here
         return vehicleRepository.save(vehicle);
     }
 
@@ -27,6 +27,13 @@ public class VehicleServiceImpl implements VehicleService {
     public Vehicle getVehicleById(Long id) {
         return vehicleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+    }
+
+    @Override
+    public Vehicle getVehicleByVin(String vin) {
+        // Your Vehicle entity has no vin field, so this cannot really look up by VIN.
+        // For now, throw not found to satisfy the interface.
+        throw new EntityNotFoundException("Vehicle not found");
     }
 
     @Override
