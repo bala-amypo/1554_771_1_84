@@ -1,41 +1,29 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.exception.EntityNotFoundException;
-import com.example.demo.model.ServicePart;
-import com.example.demo.repository.ServicePartRepository;
-import com.example.demo.service.ServicePartService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
 public class ServicePartServiceImpl implements ServicePartService {
 
     private final ServicePartRepository servicePartRepository;
+    private final ServiceEntryRepository serviceEntryRepository;
 
-    public ServicePartServiceImpl(ServicePartRepository servicePartRepository) {
+    public ServicePartServiceImpl(
+            ServicePartRepository servicePartRepository,
+            ServiceEntryRepository serviceEntryRepository) {
         this.servicePartRepository = servicePartRepository;
+        this.serviceEntryRepository = serviceEntryRepository;
     }
 
     @Override
-    public ServicePart createPart(ServicePart part) {
-        // Save the new ServicePart
-        return servicePartRepository.save(part);
-    }
+    public ServicePart createServicePart(ServicePart servicePart) {
 
-    public List<ServicePart> getAllParts() {
-        return servicePartRepository.findAll();
-    }
+        Long serviceEntryId = servicePart.getServiceEntry().getId();
 
-    public ServicePart getPartById(Long id) {
-        return servicePartRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Service part not found with id: " + id));
-    }
+        ServiceEntry serviceEntry = serviceEntryRepository.findById(serviceEntryId)
+                .orElseThrow(() ->
+                        new RuntimeException("ServiceEntry not found with id: " + serviceEntryId)
+                );
 
-    public void deletePart(Long id) {
-        if (!servicePartRepository.existsById(id)) {
-            throw new EntityNotFoundException("Service part not found with id: " + id);
-        }
-        servicePartRepository.deleteById(id);
+        // ✅ attach managed entity
+        servicePart.setServiceEntry(serviceEntry);
+
+        return servicePartRepository.save(servicePart);
     }
 }
