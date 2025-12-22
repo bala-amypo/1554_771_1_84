@@ -10,12 +10,15 @@ import java.util.Optional;
 
 public interface ServiceEntryRepository extends JpaRepository<ServiceEntry, Long> {
 
+    // Custom query to find the latest service entry for a vehicle ordered by odometer reading (descending)
     Optional<ServiceEntry> findTopByVehicleOrderByOdometerReadingDesc(Vehicle vehicle);
 
+    // Find all service entries for a specific vehicle (by vehicleId)
     List<ServiceEntry> findByVehicleId(Long vehicleId);
 
-    // These two are kept to satisfy your helper document – you may or may not use them now.
+    // Custom query to find entries for a specific garage with a minimum odometer reading
     List<ServiceEntry> findByGarageAndMinOdometer(Long garageId, int minOdometer);
 
+    // Find service entries for a specific vehicle and a date range
     List<ServiceEntry> findByVehicleAndDateRange(Long vehicleId, LocalDate from, LocalDate to);
 }

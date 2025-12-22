@@ -21,6 +21,7 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
     private final VehicleRepository vehicleRepository;
     private final GarageRepository garageRepository;
 
+    // Constructor injection for the repositories
     public ServiceEntryServiceImpl(ServiceEntryRepository serviceEntryRepository,
                                    VehicleRepository vehicleRepository,
                                    GarageRepository garageRepository) {
