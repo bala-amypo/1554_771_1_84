@@ -1,6 +1,6 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -10,28 +10,22 @@ public class ServiceEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vehicle_id")
-    private Vehicle vehicle; // Many ServiceEntries belong to one Vehicle
+    private Long vehicleId;  // The vehicle for which this service entry is made
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "garage_id")
-    private Garage garage; // Many ServiceEntries belong to one Garage
+    private LocalDate startDate;  // Service start date
+    private LocalDate endDate;    // Service end date
 
-    private Long odometerReading; // Odometer reading at the time of service
-    private LocalDate serviceDate; // Date of service
-
-    // Constructor, Getters, Setters, equals(), hashCode(), toString() methods
-
+    // Default constructor
     public ServiceEntry() {}
 
-    public ServiceEntry(Vehicle vehicle, Garage garage, Long odometerReading, LocalDate serviceDate) {
-        this.vehicle = vehicle;
-        this.garage = garage;
-        this.odometerReading = odometerReading;
-        this.serviceDate = serviceDate;
+    // Constructor with parameters
+    public ServiceEntry(Long vehicleId, LocalDate startDate, LocalDate endDate) {
+        this.vehicleId = vehicleId;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -40,46 +34,37 @@ public class ServiceEntry {
         this.id = id;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public Long getVehicleId() {
+        return vehicleId;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public void setVehicleId(Long vehicleId) {
+        this.vehicleId = vehicleId;
     }
 
-    public Garage getGarage() {
-        return garage;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setGarage(Garage garage) {
-        this.garage = garage;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public Long getOdometerReading() {
-        return odometerReading;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setOdometerReading(Long odometerReading) {
-        this.odometerReading = odometerReading;
-    }
-
-    public LocalDate getServiceDate() {
-        return serviceDate;
-    }
-
-    public void setServiceDate(LocalDate serviceDate) {
-        this.serviceDate = serviceDate;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     @Override
     public String toString() {
         return "ServiceEntry{" +
                 "id=" + id +
-                ", vehicle=" + vehicle +
-                ", garage=" + garage +
-                ", odometerReading=" + odometerReading +
-                ", serviceDate=" + serviceDate +
+                ", vehicleId=" + vehicleId +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
                 '}';
     }
 }
