@@ -1,29 +1,30 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.ServiceEntry;
+import com.example.demo.entity.ServiceEntry;
 import com.example.demo.service.ServiceEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/service-entries")
+@RequestMapping("/api/service-entries")
 public class ServiceEntryController {
 
-    @Autowired
-    private ServiceEntryService serviceEntryService;
+    private final ServiceEntryService serviceEntryService;
 
-    @PostMapping
-    public ResponseEntity<ServiceEntry> createServiceEntry(@RequestBody ServiceEntry entry) {
-        ServiceEntry saved = serviceEntryService.createServiceEntry(entry);
-        return ResponseEntity.ok(saved);
+    @Autowired
+    public ServiceEntryController(ServiceEntryService serviceEntryService) {
+        this.serviceEntryService = serviceEntryService;
     }
 
+    // Endpoint to get service entries for a specific vehicle within a date range
     @GetMapping("/vehicle/{vehicleId}")
-    public ResponseEntity<List<ServiceEntry>> getEntriesForVehicle(@PathVariable Long vehicleId) {
-        List<ServiceEntry> entries = serviceEntryService.getEntriesForVehicle(vehicleId);
-        return ResponseEntity.ok(entries);
+    public List<ServiceEntry> getServiceEntriesByVehicleAndDateRange(
+            @PathVariable Long vehicleId,
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate) {
+        return serviceEntryService.getServiceEntriesByVehicleAndDateRange(vehicleId, startDate, endDate);
     }
 }
