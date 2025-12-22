@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import com.example.demo.model.ServiceEntry;
 import com.example.demo.model.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,7 @@ public interface ServiceEntryRepository extends JpaRepository<ServiceEntry, Long
     List<ServiceEntry> findByVehicleId(Long vehicleId);
 
     // Custom query to find entries for a specific garage with a minimum odometer reading
+    @Query("SELECT se FROM ServiceEntry se WHERE se.garage.id = :garageId AND se.odometerReading >= :minOdometer")
     List<ServiceEntry> findByGarageAndMinOdometer(Long garageId, int minOdometer);
 
     // Find service entries for a specific vehicle and a date range
