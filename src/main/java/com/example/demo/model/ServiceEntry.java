@@ -1,6 +1,6 @@
 package com.example.demo.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -10,10 +10,10 @@ public class ServiceEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long vehicleId;  // The vehicle for which this service entry is made
+    private Long vehicleId;
 
-    private LocalDate startDate;  // Service start date
-    private LocalDate endDate;    // Service end date
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     // Default constructor
     public ServiceEntry() {}
