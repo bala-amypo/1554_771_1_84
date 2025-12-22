@@ -21,7 +21,7 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
     private final VehicleRepository vehicleRepository;
     private final GarageRepository garageRepository;
 
-    // Constructor injection for the repositories
+    // Constructor injection for repositories
     public ServiceEntryServiceImpl(ServiceEntryRepository serviceEntryRepository,
                                    VehicleRepository vehicleRepository,
                                    GarageRepository garageRepository) {
@@ -32,28 +32,32 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
 
     @Override
     public ServiceEntry createServiceEntry(ServiceEntry entry) {
-        // Load Vehicle by id from entry
+        // Load Vehicle by id from the entry's vehicle field
         Long vehicleId = entry.getVehicle() != null ? entry.getVehicle().getId() : null;
         if (vehicleId == null) {
             throw new EntityNotFoundException("Vehicle not found");
         }
+
+        // Fetch vehicle from the repository
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
 
-        // Load Garage by id from entry
+        // Load Garage by id from the entry's garage field
         Long garageId = entry.getGarage() != null ? entry.getGarage().getId() : null;
         if (garageId == null) {
             throw new EntityNotFoundException("Garage not found");
         }
+
+        // Fetch garage from the repository
         Garage garage = garageRepository.findById(garageId)
                 .orElseThrow(() -> new EntityNotFoundException("Garage not found"));
 
-        // Reject inactive vehicles (message must contain "active vehicles")
+        // Reject inactive vehicles
         if (!vehicle.isActive()) {
             throw new IllegalArgumentException("Service entries can be created only for active vehicles");
         }
 
-        // Enforce non-decreasing odometer (message must contain ">=")
+        // Enforce non-decreasing odometer readings
         Optional<ServiceEntry> lastEntryOpt =
                 serviceEntryRepository.findTopByVehicleOrderByOdometerReadingDesc(vehicle);
         if (lastEntryOpt.isPresent()
@@ -62,16 +66,17 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
             throw new IllegalArgumentException("Odometer reading must be >= previous reading");
         }
 
-        // Disallow future serviceDate (message must contain "future")
+        // Disallow future service dates
         LocalDate serviceDate = entry.getServiceDate();
         if (serviceDate != null && serviceDate.isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Service date cannot be in the future");
         }
 
-        // Attach managed entities
+        // Set vehicle and garage to the entry
         entry.setVehicle(vehicle);
         entry.setGarage(garage);
 
+        // Save and return the service entry
         return serviceEntryRepository.save(entry);
     }
 
