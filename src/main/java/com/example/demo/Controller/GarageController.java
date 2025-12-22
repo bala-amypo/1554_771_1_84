@@ -1,40 +1,45 @@
-package com.example.demo.model;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
+import com.example.demo.model.Garage;
+import com.example.demo.service.GarageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Entity
-@Table(name = "vehicles")
-public class Vehicle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String vin;
-    private String make;
-    private String model;
-    private Long ownerId;
-    private Boolean active;
+@RestController
+@RequestMapping("/garages")
+public class GarageController {
 
-    public Vehicle() {}
+    @Autowired
+    private GarageService garageService;
 
-    public Vehicle(String vin, String make, String model, Long ownerId, Boolean active) {
-        this.vin = vin;
-        this.make = make;
-        this.model = model;
-        this.ownerId = ownerId;
-        this.active = active;
+    @PostMapping
+    public ResponseEntity<Garage> createGarage(@RequestBody Garage garage) {
+        Garage saved = garageService.createGarage(garage);
+        return ResponseEntity.ok(saved);
     }
 
-    
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getVin() { return vin; }
-    public void setVin(String vin) { this.vin = vin; }
-    public String getMake() { return make; }
-    public void setMake(String make) { this.make = make; }
-    public String getModel() { return model; }
-    public void setModel(String model) { this.model = model; }
-    public Long getOwnerId() { return ownerId; }
-    public void setOwnerId(Long ownerId) { this.ownerId = ownerId; }
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    @GetMapping("/{id}")
+    public ResponseEntity<Garage> getGarageById(@PathVariable Long id) {
+        Garage garage = garageService.getGarageById(id);
+        return ResponseEntity.ok(garage);
+    }
+
+    @GetMapping
+    public ResponseEntity<Iterable<Garage>> getAllGarages() {
+        Iterable<Garage> garages = garageService.getAllGarages();
+        return ResponseEntity.ok(garages);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Garage> updateGarage(@PathVariable Long id, @RequestBody Garage garage) {
+        Garage updated = garageService.updateGarage(id, garage);
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteGarage(@PathVariable Long id) {
+        garageService.deleteGarage(id);
+        return ResponseEntity.noContent().build();
+    }
 }
