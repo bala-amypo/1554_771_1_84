@@ -31,7 +31,7 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
 
     @Override
     public ServiceEntry createServiceEntry(ServiceEntry entry) {
-        // Load Vehicle
+        // Load Vehicle by id from entry
         Long vehicleId = entry.getVehicle() != null ? entry.getVehicle().getId() : null;
         if (vehicleId == null) {
             throw new EntityNotFoundException("Vehicle not found");
@@ -39,7 +39,7 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
 
-        // Load Garage
+        // Load Garage by id from entry
         Long garageId = entry.getGarage() != null ? entry.getGarage().getId() : null;
         if (garageId == null) {
             throw new EntityNotFoundException("Garage not found");
@@ -48,20 +48,17 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
                 .orElseThrow(() -> new EntityNotFoundException("Garage not found"));
 
         // Reject inactive vehicles (message must contain "active vehicles")
-        Boolean active = vehicle.getActive();
-        if (active == null || !active) {
-            throw new IllegalArgumentException("Service can be created only for active vehicles");
+        if (!vehicle.isActive()) {
+            throw new IllegalArgumentException("Service entries can be created only for active vehicles");
         }
 
-        // Enforce non‑decreasing odometer (message must contain ">=")
+        // Enforce non-decreasing odometer (message must contain ">=")
         Optional<ServiceEntry> lastEntryOpt =
                 serviceEntryRepository.findTopByVehicleOrderByOdometerReadingDesc(vehicle);
-        if (lastEntryOpt.isPresent()) {
-            ServiceEntry lastEntry = lastEntryOpt.get();
-            if (entry.getOdometerReading() != null &&
-                entry.getOdometerReading() < lastEntry.getOdometerReading()) {
-                throw new IllegalArgumentException("Odometer reading must be >= previous reading");
-            }
+        if (lastEntryOpt.isPresent()
+                && entry.getOdometerReading() != null
+                && entry.getOdometerReading() < lastEntryOpt.get().getOdometerReading()) {
+            throw new IllegalArgumentException("Odometer reading must be >= previous reading");
         }
 
         // Disallow future serviceDate (message must contain "future")
@@ -70,7 +67,7 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
             throw new IllegalArgumentException("Service date cannot be in the future");
         }
 
-        // Reattach managed entities
+        // Attach managed entities
         entry.setVehicle(vehicle);
         entry.setGarage(garage);
 

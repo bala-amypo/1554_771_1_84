@@ -3,12 +3,13 @@ package com.example.demo.service.impl;
 import com.example.demo.exception.EntityNotFoundException;
 import com.example.demo.model.Vehicle;
 import com.example.demo.repository.VehicleRepository;
+import com.example.demo.service.VehicleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class VehicleServiceImpl {
+public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleRepository vehicleRepository;
 
@@ -16,24 +17,27 @@ public class VehicleServiceImpl {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public List<Vehicle> getAllVehicles() {
-        return vehicleRepository.findAll();
-    }
-
-    public Vehicle getVehicleById(Long id) {
-        return vehicleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found with id: " + id));
-    }
-
-    public Vehicle saveVehicle(Vehicle vehicle) {
+    @Override
+    public Vehicle createVehicle(Vehicle vehicle) {
+        // If you later add a uniqueness rule (e.g., on name+year or a VIN field), enforce it here
         return vehicleRepository.save(vehicle);
     }
 
-    public void deleteVehicle(Long id) {
-        if (!vehicleRepository.existsById(id)) {
-            throw new EntityNotFoundException("Vehicle not found with id: " + id);
-        }
-        vehicleRepository.deleteById(id);
+    @Override
+    public Vehicle getVehicleById(Long id) {
+        return vehicleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesByOwner(Long ownerid) {
+        return vehicleRepository.findByOwnerid(ownerid);
+    }
+
+    @Override
+    public void deactivateVehicle(Long id) {
+        Vehicle v = getVehicleById(id);
+        v.setActive(false);
+        vehicleRepository.save(v);
     }
 }
-
