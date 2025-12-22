@@ -5,25 +5,27 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")  // Optional: Specify table name (defaults to class name if not specified)
+@Table(name = "users")
 public class User {
 
-    @Id  // Marking the id field as the primary key
+    @Id
     private long id;
 
     private String email;
     private String password;
     private String role;
+    private String username;  // Add this line for the username field
 
     // Default constructor
     public User() {}
 
-    // Constructor to initialize fields
-    public User(long id, String email, String password, String role) {
+    // Constructor with username
+    public User(long id, String email, String password, String role, String username) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.username = username;
     }
 
     // Getters and Setters
@@ -43,6 +45,10 @@ public class User {
         return role;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -57,5 +63,9 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
