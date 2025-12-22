@@ -1,8 +1,7 @@
-
 package com.example.demo.service;
 
 import com.example.demo.model.VerificationLog;
 
 public interface VerificationLogService {
-    VerificationLog createLog(VerificationLog log);
+    VerificationLog createLog(VerificationLog log);  // Interface method
 }

@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class VerificationLogController {
 
     @Autowired
-    private VerificationLogService verificationLogService;
+    private VerificationLogService verificationLogService;  // Service Injection
 
     @PostMapping
     public ResponseEntity<VerificationLog> createLog(@RequestBody VerificationLog log) {
-        VerificationLog saved = verificationLogService.createLog(log);
+        VerificationLog saved = verificationLogService.createLog(log);  // Use service to create log
         return ResponseEntity.ok(saved);
     }
 }
