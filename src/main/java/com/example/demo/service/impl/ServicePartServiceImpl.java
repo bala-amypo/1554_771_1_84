@@ -4,9 +4,8 @@ public class ServicePartServiceImpl implements ServicePartService {
     private final ServicePartRepository servicePartRepository;
     private final ServiceEntryRepository serviceEntryRepository;
 
-    public ServicePartServiceImpl(
-            ServicePartRepository servicePartRepository,
-            ServiceEntryRepository serviceEntryRepository) {
+    public ServicePartServiceImpl(ServicePartRepository servicePartRepository,
+                                  ServiceEntryRepository serviceEntryRepository) {
         this.servicePartRepository = servicePartRepository;
         this.serviceEntryRepository = serviceEntryRepository;
     }

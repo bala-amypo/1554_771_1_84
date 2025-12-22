@@ -5,12 +5,20 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "service_parts")
 public class ServicePart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+
+    // ✅ FIXED
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "service_entry_id", nullable = false)
     private ServiceEntry serviceEntry;
+
+    @Column(nullable = false)
     private String partName;
+
+    @Column(nullable = false)
     private Integer quantity;
 
     public ServicePart() {}
@@ -52,5 +60,4 @@ public class ServicePart {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
 }
