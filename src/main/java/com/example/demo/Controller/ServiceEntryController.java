@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.ServiceEntry;
+import com.example.demo.model.ServiceEntry;
 import com.example.demo.service.ServiceEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
