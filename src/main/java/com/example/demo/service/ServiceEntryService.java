@@ -1,12 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.model.ServiceEntry;
-
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface ServiceEntryService {
-    
-    // Method signature to get service entries by vehicle ID and date range
-    List<ServiceEntry> getServiceEntriesByVehicleAndDateRange(Long vehicleId, LocalDate startDate, LocalDate endDate);
+    ServiceEntry createServiceEntry(ServiceEntry entry);
+    Optional<ServiceEntry> getServiceEntryById(Long id);
+    List<ServiceEntry> getEntriesForVehicle(Long vehicleId);
+    List<ServiceEntry> getAllServiceEntries();
+    ServiceEntry updateServiceEntry(Long id, ServiceEntry entry);
 }
