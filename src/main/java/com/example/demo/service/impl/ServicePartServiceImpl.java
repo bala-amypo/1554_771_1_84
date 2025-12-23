@@ -1,3 +1,12 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.model.ServiceEntry;
+import com.example.demo.model.ServicePart;
+import com.example.demo.repository.ServiceEntryRepository;
+import com.example.demo.repository.ServicePartRepository;
+import com.example.demo.service.ServicePartService;
+import org.springframework.stereotype.Service;
+
 @Service
 public class ServicePartServiceImpl implements ServicePartService {
 
@@ -11,16 +20,13 @@ public class ServicePartServiceImpl implements ServicePartService {
     }
 
     @Override
-    public ServicePart createServicePart(ServicePart servicePart) {
+    public ServicePart createPart(ServicePart servicePart) {
 
         Long serviceEntryId = servicePart.getServiceEntry().getId();
 
         ServiceEntry serviceEntry = serviceEntryRepository.findById(serviceEntryId)
-                .orElseThrow(() ->
-                        new RuntimeException("ServiceEntry not found with id: " + serviceEntryId)
-                );
+                .orElseThrow(() -> new RuntimeException("ServiceEntry not found"));
 
-        // ✅ attach managed entity
         servicePart.setServiceEntry(serviceEntry);
 
         return servicePartRepository.save(servicePart);
