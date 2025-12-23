@@ -6,19 +6,18 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "verification_logs")
 public class VerificationLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
+    @JoinColumn(name = "service_entry_id", nullable = false)
     private ServiceEntry serviceEntry;
+
     private LocalDateTime verifiedAt;
 
     public VerificationLog() {}
-
-    public VerificationLog(ServiceEntry serviceEntry, LocalDateTime verifiedAt) {
-        this.serviceEntry = serviceEntry;
-        this.verifiedAt = verifiedAt;
-    }
 
     public Long getId() {
         return id;
@@ -43,8 +42,4 @@ public class VerificationLog {
     public void setVerifiedAt(LocalDateTime verifiedAt) {
         this.verifiedAt = verifiedAt;
     }
-    
-
-    
 }
-
