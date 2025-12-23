@@ -2,40 +2,41 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Vehicle;
 import com.example.demo.service.VehicleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/vehicles")
+@RequestMapping("/api/vehicles")
 public class VehicleController {
 
-    @Autowired
-    private VehicleService vehicleService;
+    private final VehicleService vehicleService;
+    public VehicleController(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
+    }
 
     @PostMapping
     public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle) {
-        Vehicle saved = vehicleService.createVehicle(vehicle);
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(vehicleService.createVehicle(vehicle));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Vehicle> getVehicleById(@PathVariable Long id) {
-        Vehicle vehicle = vehicleService.getVehicleById(id);
-        return ResponseEntity.ok(vehicle);
+    public ResponseEntity<Vehicle> getVehicle(@PathVariable Long id) {
+        return ResponseEntity.ok(vehicleService.getVehicleById(id).get());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Vehicle>> getAllVehicles() {
+        return ResponseEntity.ok(vehicleService.getAllVehicles());
     }
 
     @GetMapping("/owner/{ownerId}")
-    public ResponseEntity<List<Vehicle>> getVehiclesByOwner(@PathVariable Long ownerId) {
-        List<Vehicle> vehicles = vehicleService.getVehiclesByOwner(ownerId);
-        return ResponseEntity.ok(vehicles);
+    public ResponseEntity<List<Vehicle>> getByOwner(@PathVariable Long ownerId) {
+        return ResponseEntity.ok(vehicleService.getVehiclesByOwner(ownerId));
     }
 
-    @PostMapping("/{id}/deactivate")
-    public ResponseEntity<Void> deactivateVehicle(@PathVariable Long id) {
-        vehicleService.deactivateVehicle(id);
-        return ResponseEntity.ok().build();
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<Vehicle> deactivateVehicle(@PathVariable Long id) {
+        return ResponseEntity.ok(vehicleService.deactivateVehicle(id));
     }
 }
