@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.ServiceEntry;
+import com.example.demo.model.Vehicle;
 import com.example.demo.service.ServiceEntryService;
+import com.example.demo.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,18 +15,31 @@ import java.util.List;
 public class ServiceEntryController {
 
     private final ServiceEntryService serviceEntryService;
+    private final VehicleRepository vehicleRepository;
 
     @Autowired
-    public ServiceEntryController(ServiceEntryService serviceEntryService) {
+    public ServiceEntryController(ServiceEntryService serviceEntryService,
+                                  VehicleRepository vehicleRepository) {
         this.serviceEntryService = serviceEntryService;
+        this.vehicleRepository = vehicleRepository;
     }
 
-    // Endpoint to get service entries for a specific vehicle within a date range
+    @PostMapping
+    public ServiceEntry createServiceEntry(@RequestBody ServiceEntry entry) {
+        Long vehicleId = entry.getVehicleId();
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+        entry.setVehicleId(vehicle.getId());
+        return serviceEntryService.saveServiceEntry(entry); // ensure saveServiceEntry() exists in your service
+    }
+
     @GetMapping("/vehicle/{vehicleId}")
     public List<ServiceEntry> getServiceEntriesByVehicleAndDateRange(
             @PathVariable Long vehicleId,
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate) {
-        return serviceEntryService.getServiceEntriesByVehicleAndDateRange(vehicleId, startDate, endDate);
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        return serviceEntryService.getServiceEntriesByVehicleAndDateRange(vehicleId, start, end);
     }
 }
