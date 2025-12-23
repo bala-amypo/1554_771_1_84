@@ -31,6 +31,8 @@ public class Garage {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "garage", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ServiceEntry> serviceEntries;
+    @OneToMany(mappedBy = "garage", cascade = CascadeType.ALL)
+@JsonIgnore
+private List<ServiceEntry> serviceEntries;
+
 }

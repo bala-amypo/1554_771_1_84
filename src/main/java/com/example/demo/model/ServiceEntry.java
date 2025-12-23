@@ -21,13 +21,14 @@ public class ServiceEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vehicle_id", nullable = false)
-    private Vehicle vehicle;
+    @ManyToOne
+@JoinColumn(name = "vehicle_id")
+private Vehicle vehicle;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "garage_id", nullable = false)
-    private Garage garage;
+@ManyToOne
+@JoinColumn(name = "garage_id")
+private Garage garage;
+
 
     @NotBlank
     private String serviceType;
