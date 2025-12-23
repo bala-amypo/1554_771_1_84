@@ -1,12 +1,13 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.EntityNotFoundException;
 import com.example.demo.model.Vehicle;
 import com.example.demo.repository.VehicleRepository;
 import com.example.demo.service.VehicleService;
+import com.example.demo.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -19,27 +20,32 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Vehicle createVehicle(Vehicle vehicle) {
-        
+        vehicleRepository.findByVin(vehicle.getVin())
+                .ifPresent(v -> { throw new IllegalArgumentException("VIN already exists"); });
         return vehicleRepository.save(vehicle);
     }
 
     @Override
-    public Vehicle getVehicleById(Long id) {
+    public Optional<Vehicle> getVehicleById(Long id) {
         return vehicleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
-    }
-
-   
-
-    @Override
-    public List<Vehicle> getVehiclesByOwner(Long ownerid) {
-        return vehicleRepository.findByOwnerid(ownerid);
+                .or(() -> { throw new ResourceNotFoundException("Vehicle not found"); });
     }
 
     @Override
-    public void deactivateVehicle(Long id) {
-        Vehicle v = getVehicleById(id);
-        v.setActive(false);
-        vehicleRepository.save(v);
+    public List<Vehicle> getAllVehicles() {
+        return vehicleRepository.findAll();
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesByOwner(Long ownerId) {
+        return vehicleRepository.findByOwnerId(ownerId);
+    }
+
+    @Override
+    public Vehicle deactivateVehicle(Long id) {
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found"));
+        vehicle.setActive(false);
+        return vehicleRepository.save(vehicle);
     }
 }
