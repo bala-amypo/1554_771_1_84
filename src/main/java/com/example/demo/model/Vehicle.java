@@ -1,51 +1,42 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import java.sql.Timestamp;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
+@Table(name = "vehicles", uniqueConstraints = {@UniqueConstraint(columnNames = "vin")})
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private int year;
-    private Long ownerid;
-    private Timestamp createdAt;
-    private boolean active;
+    @NotBlank
+    @Column(unique = true)
+    private String vin;
 
-    public Vehicle() {}
+    @NotBlank
+    private String make;
 
-    public Vehicle(Long id, String name, int year, Long ownerid, Timestamp createdAt, boolean active) {
-        this.id = id;
-        this.name = name;
-        this.year = year;
-        this.ownerid = ownerid;
-        this.createdAt = createdAt;
-        this.active = active;
-    }
+    @NotBlank
+    private String model;
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @NotNull
+    private Long ownerId;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    private Boolean active = true;
 
-    public int getYear() { return year; }
-    public void setYear(int year) { this.year = year; }
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    public Long getOwnerid() { return ownerid; }
-    public void setOwnerid(Long ownerid) { this.ownerid = ownerid; }
-
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
-
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ServiceEntry> serviceEntries;
 }

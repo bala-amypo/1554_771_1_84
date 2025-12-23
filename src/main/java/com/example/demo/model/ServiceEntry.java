@@ -1,70 +1,58 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
+@Table(name = "service_entries")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ServiceEntry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long vehicleId;
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    @ManyToOne
+    @JoinColumn(name = "garage_id", nullable = false)
+    private Garage garage;
 
-    // Default constructor
-    public ServiceEntry() {}
+    @NotBlank
+    private String serviceType;
 
-    // Constructor with parameters
-    public ServiceEntry(Long vehicleId, LocalDate startDate, LocalDate endDate) {
-        this.vehicleId = vehicleId;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+    @NotNull
+    private LocalDate serviceDate;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
+    @NotNull
+    @Positive
+    private Long odometerReading;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @NotNull
+    @Positive
+    private BigDecimal cost;
 
-    public Long getVehicleId() {
-        return vehicleId;
-    }
+    @Lob
+    @Size(max = 2000)
+    private String notes;
 
-    public void setVehicleId(Long vehicleId) {
-        this.vehicleId = vehicleId;
-    }
+    @CreationTimestamp
+    private LocalDateTime submittedAt;
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
+    @OneToMany(mappedBy = "serviceEntry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ServicePart> parts;
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    @Override
-    public String toString() {
-        return "ServiceEntry{" +
-                "id=" + id +
-                ", vehicleId=" + vehicleId +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                '}';
-    }
+    @OneToMany(mappedBy = "serviceEntry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<VerificationLog> verificationLogs;
 }

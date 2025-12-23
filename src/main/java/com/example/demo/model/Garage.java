@@ -1,58 +1,36 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "garages")
+@Table(name = "garages", uniqueConstraints = {@UniqueConstraint(columnNames = "garageName")})
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Garage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Column(unique = true)
     private String garageName;
-    private String address;
-    private Boolean active;
 
-    public Garage() {}
+    @NotBlank
+    private String location;
 
+    private Boolean active = true;
 
-    public Garage(Long id, String garageName, String address, Boolean active) {
-        this.id = id;
-        this.garageName = garageName;
-        this.address = address;
-        this.active = active;
-    }
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getGarageName() {
-        return garageName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setGarageName(String garageName) {
-        this.garageName = garageName;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    
+    @OneToMany(mappedBy = "garage", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ServiceEntry> serviceEntries;
 }
