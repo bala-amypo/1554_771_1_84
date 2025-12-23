@@ -10,7 +10,7 @@ public class ServicePart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ✅ FIXED
+    
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "service_entry_id", nullable = false)
     private ServiceEntry serviceEntry;
