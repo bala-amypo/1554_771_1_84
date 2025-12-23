@@ -5,6 +5,7 @@ import com.example.demo.repository.GarageRepository;
 import com.example.demo.service.GarageService;
 import com.example.demo.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 import java.util.List;
 
