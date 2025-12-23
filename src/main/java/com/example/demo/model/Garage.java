@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "garages", uniqueConstraints = {@UniqueConstraint(columnNames = "garageName")})
