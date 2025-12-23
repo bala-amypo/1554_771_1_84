@@ -22,7 +22,6 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
 
     @Override
     public List<ServiceEntry> getServiceEntriesByVehicleAndDateRange(Long vehicleId, LocalDate startDate, LocalDate endDate) {
-        // Retrieve the service entries by vehicle and the date range
         return serviceEntryRepository.findByVehicleIdAndStartDateBetween(vehicleId, startDate, endDate);
     }
 }

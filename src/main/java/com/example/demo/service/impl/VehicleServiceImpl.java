@@ -19,7 +19,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Vehicle createVehicle(Vehicle vehicle) {
-        // No VIN field in your model, so no VIN uniqueness check here
+        
         return vehicleRepository.save(vehicle);
     }
 

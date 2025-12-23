@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ServiceEntryRepository extends JpaRepository<ServiceEntry, Long> {
 
-    // Custom query method to find service entries by vehicle and date range
+    
     List<ServiceEntry> findByVehicleIdAndStartDateBetween(Long vehicleId, LocalDate startDate, LocalDate endDate);
 }

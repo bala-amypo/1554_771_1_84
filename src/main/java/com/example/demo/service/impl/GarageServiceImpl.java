@@ -16,7 +16,7 @@ public class GarageServiceImpl implements GarageService {
 
     @Override
     public Garage createGarage(Garage garage) {
-        // Enforce unique garageName ("already exists" in message)
+        
         if (garageRepository.findByGarageName(garage.getGarageName()).isPresent()) {
             throw new IllegalArgumentException("Garage already exists");
         }
