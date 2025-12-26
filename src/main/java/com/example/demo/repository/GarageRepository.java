@@ -1,11 +1,24 @@
-package com.example.demo.repository;
+package com.example.demo.service.impl;
 
 import com.example.demo.model.Garage;
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
-import java.util.Optional;
+import com.example.demo.repository.GarageRepository;
+import com.example.demo.service.GarageService;
+import org.springframework.stereotype.Service;
 
-public interface GarageRepository extends JpaRepository<Garage, Long> {
-    Optional<Garage> findByGarageName(String garageName);
-    List<Garage> findByActive(Boolean active);
+@Service
+public class GarageServiceImpl implements GarageService {
+
+    private final GarageRepository garageRepository;
+
+    public GarageServiceImpl(GarageRepository garageRepository) {
+        this.garageRepository = garageRepository;
+    }
+
+    @Override
+    public Garage createGarage(Garage garage) {
+        if (garageRepository.findByGarageName(garage.getGarageName()).isPresent()) {
+            throw new IllegalArgumentException("Garage already exists");
+        }
+        return garageRepository.save(garage);
+    }
 }
