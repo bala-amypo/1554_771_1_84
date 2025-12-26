@@ -4,6 +4,7 @@ import com.example.demo.model.ServiceEntry;
 import com.example.demo.service.ServiceEntryService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,5 +25,14 @@ public class ServiceEntryController {
     @GetMapping("/vehicle/{vehicleId}")
     public List<ServiceEntry> getEntriesForVehicle(@PathVariable Long vehicleId) {
         return serviceEntryService.getEntriesForVehicle(vehicleId);
+    }
+
+    @GetMapping("/vehicle/{vehicleId}/range")
+    public List<ServiceEntry> getEntriesByDateRange(
+            @PathVariable long vehicleId,
+            @RequestParam LocalDate start,
+            @RequestParam LocalDate end
+    ) {
+        return serviceEntryService.findByVehicleAndDateRange(vehicleId, start, end);
     }
 }

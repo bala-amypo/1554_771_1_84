@@ -3,9 +3,9 @@ package com.example.demo.service.impl;
 import com.example.demo.model.ServiceEntry;
 import com.example.demo.repository.ServiceEntryRepository;
 import com.example.demo.service.ServiceEntryService;
-
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,21 +19,25 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
 
     @Override
     public ServiceEntry createServiceEntry(ServiceEntry entry) {
-
-        ServiceEntry last =
-                serviceEntryRepository.findTopByVehicleOrderByOdometerReadingDesc(
-                        entry.getVehicle()
-                );
-
-        if (last != null && entry.getOdometerReading() < last.getOdometerReading()) {
-            throw new IllegalArgumentException("Odometer reading cannot be less than previous");
-        }
-
         return serviceEntryRepository.save(entry);
     }
 
     @Override
     public List<ServiceEntry> getEntriesForVehicle(Long vehicleId) {
         return serviceEntryRepository.findByVehicleId(vehicleId);
+    }
+
+    @Override
+    public List<ServiceEntry> findByGarageAndMinOdometer(long garageId, int minOdometer) {
+        return serviceEntryRepository.findByGarageAndMinOdometer(garageId, minOdometer);
+    }
+
+    @Override
+    public List<ServiceEntry> findByVehicleAndDateRange(
+            long vehicleId,
+            LocalDate start,
+            LocalDate end
+    ) {
+        return serviceEntryRepository.findByVehicleAndDateRange(vehicleId, start, end);
     }
 }
