@@ -1,40 +1,29 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import java.time.LocalDateTime;
-import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Entity
-@Table(name = "garages", uniqueConstraints = {@UniqueConstraint(columnNames = "garageName")})
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Garage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    @NotBlank
     @Column(unique = true)
     private String garageName;
 
-    @NotBlank
-    private String location;
-
+    private String address;
     private Boolean active = true;
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    @OneToMany(mappedBy = "garage", cascade = CascadeType.ALL)
-@JsonIgnore
-private List<ServiceEntry> serviceEntries;
+    public String getGarageName() { return garageName; }
+    public void setGarageName(String garageName) { this.garageName = garageName; }
 
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }

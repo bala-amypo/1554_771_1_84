@@ -1,34 +1,29 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-import java.math.BigDecimal;
 
 @Entity
-@Table(name = "service_parts")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ServicePart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_entry_id", nullable = false)
+    @ManyToOne
     private ServiceEntry serviceEntry;
 
-    @NotBlank
     private String partName;
+    private int quantity;
 
-    @NotNull
-    @Positive
-    private Integer quantity;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    @NotNull
-    @Positive
-    private BigDecimal cost;
+    public ServiceEntry getServiceEntry() { return serviceEntry; }
+    public void setServiceEntry(ServiceEntry serviceEntry) { this.serviceEntry = serviceEntry; }
+
+    public String getPartName() { return partName; }
+    public void setPartName(String partName) { this.partName = partName; }
+
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 }

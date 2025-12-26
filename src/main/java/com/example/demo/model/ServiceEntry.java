@@ -1,61 +1,40 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Entity
-@Table(name = "service_entries")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ServiceEntry {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @ManyToOne
-@JoinColumn(name = "vehicle_id")
-private Vehicle vehicle;
+    private Vehicle vehicle;
 
-@ManyToOne
-@JoinColumn(name = "garage_id")
-private Garage garage;
+    @ManyToOne
+    private Garage garage;
 
-
-    @NotBlank
     private String serviceType;
-
-    @NotNull
     private LocalDate serviceDate;
+    private int odometerReading;
 
-    @NotNull
-    @Positive
-    private Long odometerReading;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    @NotNull
-    @Positive
-    private BigDecimal cost;
+    public Vehicle getVehicle() { return vehicle; }
+    public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
 
-    @Lob
-    @Size(max = 2000)
-    private String notes;
+    public Garage getGarage() { return garage; }
+    public void setGarage(Garage garage) { this.garage = garage; }
 
-    @CreationTimestamp
-    private LocalDateTime submittedAt;
+    public String getServiceType() { return serviceType; }
+    public void setServiceType(String serviceType) { this.serviceType = serviceType; }
 
-    @OneToMany(mappedBy = "serviceEntry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ServicePart> parts;
+    public LocalDate getServiceDate() { return serviceDate; }
+    public void setServiceDate(LocalDate serviceDate) { this.serviceDate = serviceDate; }
 
-    @OneToMany(mappedBy = "serviceEntry", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<VerificationLog> verificationLogs;
+    public int getOdometerReading() { return odometerReading; }
+    public void setOdometerReading(int odometerReading) { this.odometerReading = odometerReading; }
 }
