@@ -4,15 +4,16 @@ import com.example.demo.model.Vehicle;
 import com.example.demo.repository.VehicleRepository;
 import com.example.demo.service.VehicleService;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
 
-@Service
+@Service  
 public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleRepository vehicleRepository;
 
+    // ✅ Constructor injection REQUIRED
     public VehicleServiceImpl(VehicleRepository vehicleRepository) {
         this.vehicleRepository = vehicleRepository;
     }
@@ -28,13 +29,20 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public Vehicle getVehicleById(Long id) {
         return vehicleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Vehicle not found"));
     }
 
     @Override
     public Vehicle getVehicleByVin(String vin) {
         return vehicleRepository.findByVin(vin)
-                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Vehicle not found"));
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesByOwner(Long ownerId) {
+        return vehicleRepository.findByOwnerId(ownerId);
     }
 
     @Override
@@ -42,10 +50,5 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = getVehicleById(id);
         vehicle.setActive(false);
         vehicleRepository.save(vehicle);
-    }
-
-    @Override
-    public List<Vehicle> getVehiclesByOwner(Long ownerId) {
-        return vehicleRepository.findByOwnerId(ownerId);
     }
 }
