@@ -3,11 +3,10 @@ package com.example.demo.service.impl;
 import com.example.demo.model.Vehicle;
 import com.example.demo.repository.VehicleRepository;
 import com.example.demo.service.VehicleService;
-import com.example.demo.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -20,32 +19,33 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Vehicle createVehicle(Vehicle vehicle) {
-        vehicleRepository.findByVin(vehicle.getVin())
-                .ifPresent(v -> { throw new IllegalArgumentException("VIN already exists"); });
+        if (vehicleRepository.findByVin(vehicle.getVin()).isPresent()) {
+            throw new IllegalArgumentException("VIN already exists");
+        }
         return vehicleRepository.save(vehicle);
     }
 
     @Override
-    public Optional<Vehicle> getVehicleById(Long id) {
+    public Vehicle getVehicleById(Long id) {
         return vehicleRepository.findById(id)
-                .or(() -> { throw new ResourceNotFoundException("Vehicle not found"); });
+                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
     }
 
     @Override
-    public List<Vehicle> getAllVehicles() {
-        return vehicleRepository.findAll();
+    public Vehicle getVehicleByVin(String vin) {
+        return vehicleRepository.findByVin(vin)
+                .orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+    }
+
+    @Override
+    public void deactivateVehicle(Long id) {
+        Vehicle vehicle = getVehicleById(id);
+        vehicle.setActive(false);
+        vehicleRepository.save(vehicle);
     }
 
     @Override
     public List<Vehicle> getVehiclesByOwner(Long ownerId) {
         return vehicleRepository.findByOwnerId(ownerId);
-    }
-
-    @Override
-    public Vehicle deactivateVehicle(Long id) {
-        Vehicle vehicle = vehicleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found"));
-        vehicle.setActive(false);
-        return vehicleRepository.save(vehicle);
     }
 }
