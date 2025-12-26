@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Vehicle;
 import com.example.demo.service.VehicleService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -11,32 +11,33 @@ import java.util.List;
 public class VehicleController {
 
     private final VehicleService vehicleService;
+
     public VehicleController(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
     }
 
     @PostMapping
-    public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle) {
-        return ResponseEntity.ok(vehicleService.createVehicle(vehicle));
+    public Vehicle createVehicle(@RequestBody Vehicle vehicle) {
+        return vehicleService.createVehicle(vehicle);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Vehicle> getVehicle(@PathVariable Long id) {
-        return ResponseEntity.ok(vehicleService.getVehicleById(id).get());
+    public Vehicle getVehicle(@PathVariable Long id) {
+        return vehicleService.getVehicleById(id);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Vehicle>> getAllVehicles() {
-        return ResponseEntity.ok(vehicleService.getAllVehicles());
+    @GetMapping("/vin/{vin}")
+    public Vehicle getVehicleByVin(@PathVariable String vin) {
+        return vehicleService.getVehicleByVin(vin);
     }
 
     @GetMapping("/owner/{ownerId}")
-    public ResponseEntity<List<Vehicle>> getByOwner(@PathVariable Long ownerId) {
-        return ResponseEntity.ok(vehicleService.getVehiclesByOwner(ownerId));
+    public List<Vehicle> getVehiclesByOwner(@PathVariable Long ownerId) {
+        return vehicleService.getVehiclesByOwner(ownerId);
     }
 
     @PutMapping("/{id}/deactivate")
-    public ResponseEntity<Vehicle> deactivateVehicle(@PathVariable Long id) {
-        return ResponseEntity.ok(vehicleService.deactivateVehicle(id));
+    public void deactivateVehicle(@PathVariable Long id) {
+        vehicleService.deactivateVehicle(id);
     }
 }

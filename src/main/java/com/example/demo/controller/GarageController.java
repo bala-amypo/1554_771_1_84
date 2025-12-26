@@ -5,7 +5,7 @@ import com.example.demo.service.GarageService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/garages")
+@RequestMapping("/api/garages")
 public class GarageController {
 
     private final GarageService garageService;

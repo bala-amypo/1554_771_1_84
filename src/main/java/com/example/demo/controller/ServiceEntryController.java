@@ -2,8 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.ServiceEntry;
 import com.example.demo.service.ServiceEntryService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -11,17 +12,22 @@ import java.util.List;
 public class ServiceEntryController {
 
     private final ServiceEntryService serviceEntryService;
+
     public ServiceEntryController(ServiceEntryService serviceEntryService) {
         this.serviceEntryService = serviceEntryService;
     }
 
     @PostMapping
-    public ResponseEntity<ServiceEntry> createEntry(@RequestBody ServiceEntry entry) {
-        return ResponseEntity.ok(serviceEntryService.createServiceEntry(entry));
+    public ServiceEntry createEntry(@RequestBody ServiceEntry entry) {
+        return serviceEntryService.createServiceEntry(entry);
     }
 
     @GetMapping("/vehicle/{vehicleId}")
-    public ResponseEntity<List<ServiceEntry>> getByVehicle(@PathVariable Long vehicleId) {
-        return ResponseEntity.ok(serviceEntryService.getEntriesForVehicle(vehicleId));
+    public List<ServiceEntry> getEntriesForVehicle(
+            @PathVariable Long vehicleId,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate
+    ) {
+        return serviceEntryService.getEntriesForVehicle(vehicleId);
     }
 }
