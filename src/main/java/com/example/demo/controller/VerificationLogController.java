@@ -5,7 +5,7 @@ import com.example.demo.service.VerificationLogService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/verification-logs")
+@RequestMapping("/verification-logs")
 public class VerificationLogController {
 
     private final VerificationLogService verificationLogService;
@@ -15,7 +15,7 @@ public class VerificationLogController {
     }
 
     @PostMapping
-    public VerificationLog createLog(@RequestBody VerificationLog log) {
+    public VerificationLog create(@RequestBody VerificationLog log) {
         return verificationLogService.createLog(log);
     }
 }

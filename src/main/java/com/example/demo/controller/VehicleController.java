@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vehicles")
+@RequestMapping("/vehicles")
 public class VehicleController {
 
     private final VehicleService vehicleService;
 
+    // Constructor injection
     public VehicleController(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
     }
@@ -26,18 +27,13 @@ public class VehicleController {
         return vehicleService.getVehicleById(id);
     }
 
-    @GetMapping("/vin/{vin}")
-    public Vehicle getVehicleByVin(@PathVariable String vin) {
-        return vehicleService.getVehicleByVin(vin);
-    }
-
     @GetMapping("/owner/{ownerId}")
-    public List<Vehicle> getVehiclesByOwner(@PathVariable Long ownerId) {
+    public List<Vehicle> getByOwner(@PathVariable Long ownerId) {
         return vehicleService.getVehiclesByOwner(ownerId);
     }
 
-    @PutMapping("/{id}/deactivate")
-    public void deactivateVehicle(@PathVariable Long id) {
+    @PostMapping("/{id}/deactivate")
+    public void deactivate(@PathVariable Long id) {
         vehicleService.deactivateVehicle(id);
     }
 }

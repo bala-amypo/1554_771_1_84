@@ -5,7 +5,7 @@ import com.example.demo.service.ServicePartService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/service-parts")
+@RequestMapping("/service-parts")
 public class ServicePartController {
 
     private final ServicePartService servicePartService;
@@ -15,7 +15,7 @@ public class ServicePartController {
     }
 
     @PostMapping
-    public ServicePart createPart(@RequestBody ServicePart part) {
+    public ServicePart create(@RequestBody ServicePart part) {
         return servicePartService.createPart(part);
     }
 }

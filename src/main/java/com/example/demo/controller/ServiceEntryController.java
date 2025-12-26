@@ -4,7 +4,6 @@ import com.example.demo.model.ServiceEntry;
 import com.example.demo.service.ServiceEntryService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -17,27 +16,13 @@ public class ServiceEntryController {
         this.serviceEntryService = serviceEntryService;
     }
 
-    // Create a new service entry
     @PostMapping
-    public ServiceEntry createServiceEntry(@RequestBody ServiceEntry serviceEntry) {
-        return serviceEntryService.createServiceEntry(serviceEntry);
+    public ServiceEntry create(@RequestBody ServiceEntry entry) {
+        return serviceEntryService.createServiceEntry(entry);
     }
 
-    // Get all service entries for a vehicle
     @GetMapping("/vehicle/{vehicleId}")
-    public List<ServiceEntry> getEntriesForVehicle(@PathVariable Long vehicleId) {
+    public List<ServiceEntry> getForVehicle(@PathVariable Long vehicleId) {
         return serviceEntryService.getEntriesForVehicle(vehicleId);
-    }
-
-    // Get service entries for a vehicle within date range
-    @GetMapping("/vehicle/{vehicleId}/range")
-    public List<ServiceEntry> getEntriesByVehicleAndDateRange(
-            @PathVariable long vehicleId,
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate
-    ) {
-        return serviceEntryService.findByVehicleAndDateRange(
-                vehicleId, startDate, endDate
-        );
     }
 }
