@@ -1,40 +1,34 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "service_entries")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ServiceEntry {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Vehicle vehicle;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Garage garage;
 
+    @Column(nullable = false)
     private String serviceType;
+
+    @Column(nullable = false)
     private LocalDate serviceDate;
-    private int odometerReading;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Vehicle getVehicle() { return vehicle; }
-    public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
-
-    public Garage getGarage() { return garage; }
-    public void setGarage(Garage garage) { this.garage = garage; }
-
-    public String getServiceType() { return serviceType; }
-    public void setServiceType(String serviceType) { this.serviceType = serviceType; }
-
-    public LocalDate getServiceDate() { return serviceDate; }
-    public void setServiceDate(LocalDate serviceDate) { this.serviceDate = serviceDate; }
-
-    public int getOdometerReading() { return odometerReading; }
-    public void setOdometerReading(int odometerReading) { this.odometerReading = odometerReading; }
+    @Column(nullable = false)
+    private Integer odometerReading;
 }
