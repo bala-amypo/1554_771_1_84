@@ -17,22 +17,27 @@ public class ServiceEntryController {
         this.serviceEntryService = serviceEntryService;
     }
 
+    // Create a new service entry
     @PostMapping
-    public ServiceEntry createServiceEntry(@RequestBody ServiceEntry entry) {
-        return serviceEntryService.createServiceEntry(entry);
+    public ServiceEntry createServiceEntry(@RequestBody ServiceEntry serviceEntry) {
+        return serviceEntryService.createServiceEntry(serviceEntry);
     }
 
+    // Get all service entries for a vehicle
     @GetMapping("/vehicle/{vehicleId}")
     public List<ServiceEntry> getEntriesForVehicle(@PathVariable Long vehicleId) {
         return serviceEntryService.getEntriesForVehicle(vehicleId);
     }
 
+    // Get service entries for a vehicle within date range
     @GetMapping("/vehicle/{vehicleId}/range")
-    public List<ServiceEntry> getEntriesByDateRange(
+    public List<ServiceEntry> getEntriesByVehicleAndDateRange(
             @PathVariable long vehicleId,
-            @RequestParam LocalDate start,
-            @RequestParam LocalDate end
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate
     ) {
-        return serviceEntryService.findByVehicleAndDateRange(vehicleId, start, end);
+        return serviceEntryService.findByVehicleAndDateRange(
+                vehicleId, startDate, endDate
+        );
     }
 }
