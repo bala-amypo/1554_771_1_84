@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.ServiceEntry;
 import com.example.demo.service.ServiceEntryService;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,15 +16,13 @@ public class ServiceEntryController {
         this.serviceEntryService = serviceEntryService;
     }
 
-    // ✅ REQUIRED BY TESTS
     @PostMapping
-    public ServiceEntry createServiceEntry(@RequestBody ServiceEntry serviceEntry) {
-        return serviceEntryService.save(serviceEntry);
+    public ServiceEntry createServiceEntry(@RequestBody ServiceEntry entry) {
+        return serviceEntryService.createServiceEntry(entry);
     }
 
-    // ✅ REQUIRED BY TESTS
     @GetMapping("/vehicle/{vehicleId}")
     public List<ServiceEntry> getEntriesForVehicle(@PathVariable Long vehicleId) {
-        return serviceEntryService.getByVehicleId(vehicleId);
+        return serviceEntryService.getEntriesForVehicle(vehicleId);
     }
 }
