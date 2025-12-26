@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.ServiceEntry;
+import com.example.demo.model.Vehicle;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,12 +14,12 @@ public interface ServiceEntryService {
 
     List<ServiceEntry> findByVehicleAndDateRange(
             long vehicleId,
-            LocalDate startDate,
-            LocalDate endDate
+            LocalDate start,
+            LocalDate end
     );
 
-    List<ServiceEntry> findByGarageAndMinOdometer(
-            long garageId,
-            int minOdometer
-    );
+    List<ServiceEntry> findByGarageAndMinOdometer(long garageId, int minOdometer);
+
+    // ✅ REQUIRED
+    ServiceEntry findTopByVehicleOrderByOdometerReadingDesc(Vehicle vehicle);
 }
