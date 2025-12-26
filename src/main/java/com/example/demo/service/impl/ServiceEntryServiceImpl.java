@@ -1,59 +1,45 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.model.Garage;
-import com.example.demo.model.ServiceEntry;
-import com.example.demo.model.Vehicle;
-import com.example.demo.repository.GarageRepository;
-import com.example.demo.repository.ServiceEntryRepository;
-import com.example.demo.repository.VehicleRepository;
-import com.example.demo.service.ServiceEntryService;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
-
 @Service
 public class ServiceEntryServiceImpl implements ServiceEntryService {
 
     private final ServiceEntryRepository serviceEntryRepository;
-    private final VehicleRepository vehicleRepository;
-    private final GarageRepository garageRepository;
 
-    public ServiceEntryServiceImpl(ServiceEntryRepository serviceEntryRepository,
-                                   VehicleRepository vehicleRepository,
-                                   GarageRepository garageRepository) {
+    public ServiceEntryServiceImpl(ServiceEntryRepository serviceEntryRepository) {
         this.serviceEntryRepository = serviceEntryRepository;
-        this.vehicleRepository = vehicleRepository;
-        this.garageRepository = garageRepository;
     }
 
     @Override
-    public ServiceEntry createServiceEntry(ServiceEntry entry) {
+    public ServiceEntry save(ServiceEntry entry) {
 
-        Vehicle vehicle = vehicleRepository.findById(entry.getVehicle().getId()).orElseThrow();
-        Garage garage = garageRepository.findById(entry.getGarage().getId()).orElseThrow();
+        ServiceEntry last = serviceEntryRepository
+                .findTopByVehicleOrderByOdometerReadingDesc(entry.getVehicle());
 
-        if (!vehicle.getActive()) {
-            throw new IllegalArgumentException("Only active vehicles allowed");
+        if (last != null) {
+            if (entry.getOdometerReading() < last.getOdometerReading()) {
+                throw new IllegalArgumentException("Odometer reading cannot be less than previous");
+            }
         }
-
-        if (entry.getServiceDate().isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Service date cannot be in future");
-        }
-
-        serviceEntryRepository
-                .findTopByVehicleOrderByOdometerReadingDesc(vehicle)
-                .ifPresent(last -> {
-                    if (entry.getOdometerReading() < last.getOdometerReading()) {
-                        throw new IllegalArgumentException("Odometer must be >=");
-                    }
-                });
 
         return serviceEntryRepository.save(entry);
     }
 
     @Override
-    public List<ServiceEntry> getEntriesForVehicle(Long vehicleId) {
+    public List<ServiceEntry> getByVehicleId(Long vehicleId) {
         return serviceEntryRepository.findByVehicleId(vehicleId);
+    }
+
+    @Override
+    public List<ServiceEntry> getByGarageAndMinOdometer(Long garageId, int minOdometer) {
+        return serviceEntryRepository.findByGarageAndMinOdometer(garageId, minOdometer);
+    }
+
+    @Override
+    public List<ServiceEntry> getByVehicleAndDateRange(
+            Long vehicleId,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+        return serviceEntryRepository.findByVehicleAndDateRange(
+                vehicleId, startDate, endDate
+        );
     }
 }
