@@ -14,7 +14,7 @@ public interface ServiceEntryRepository extends JpaRepository<ServiceEntry, Long
 
     List<ServiceEntry> findByVehicleAndDateRange(
             long vehicleId,
-            LocalDate start,
-            LocalDate end
+            LocalDate startDate,
+            LocalDate endDate
     );
 }

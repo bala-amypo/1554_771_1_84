@@ -28,16 +28,23 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
     }
 
     @Override
-    public List<ServiceEntry> findByGarageAndMinOdometer(long garageId, int minOdometer) {
-        return serviceEntryRepository.findByGarageAndMinOdometer(garageId, minOdometer);
+    public List<ServiceEntry> findByVehicleAndDateRange(
+            long vehicleId,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+        return serviceEntryRepository.findByVehicleAndDateRange(
+                vehicleId, startDate, endDate
+        );
     }
 
     @Override
-    public List<ServiceEntry> findByVehicleAndDateRange(
-            long vehicleId,
-            LocalDate start,
-            LocalDate end
+    public List<ServiceEntry> findByGarageAndMinOdometer(
+            long garageId,
+            int minOdometer
     ) {
-        return serviceEntryRepository.findByVehicleAndDateRange(vehicleId, start, end);
+        return serviceEntryRepository.findByGarageAndMinOdometer(
+                garageId, minOdometer
+        );
     }
 }
