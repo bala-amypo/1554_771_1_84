@@ -11,17 +11,9 @@ import java.util.List;
 
 public interface ServiceEntryRepository extends JpaRepository<ServiceEntry, Long> {
 
-    // -----------------------------
-    // Used in test cases
-    // -----------------------------
-
     List<ServiceEntry> findByVehicleId(Long vehicleId);
 
     ServiceEntry findTopByVehicleOrderByOdometerReadingDesc(Vehicle vehicle);
-
-    // -----------------------------
-    // Filtering queries
-    // -----------------------------
 
     @Query("""
         SELECT s FROM ServiceEntry s

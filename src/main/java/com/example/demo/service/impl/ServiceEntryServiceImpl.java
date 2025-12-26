@@ -1,3 +1,14 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.model.ServiceEntry;
+import com.example.demo.repository.ServiceEntryRepository;
+import com.example.demo.service.ServiceEntryService;
+
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 public class ServiceEntryServiceImpl implements ServiceEntryService {
 
@@ -13,10 +24,8 @@ public class ServiceEntryServiceImpl implements ServiceEntryService {
         ServiceEntry last = serviceEntryRepository
                 .findTopByVehicleOrderByOdometerReadingDesc(entry.getVehicle());
 
-        if (last != null) {
-            if (entry.getOdometerReading() < last.getOdometerReading()) {
-                throw new IllegalArgumentException("Odometer reading cannot be less than previous");
-            }
+        if (last != null && entry.getOdometerReading() < last.getOdometerReading()) {
+            throw new IllegalArgumentException("Odometer reading cannot be less than previous");
         }
 
         return serviceEntryRepository.save(entry);
