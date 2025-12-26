@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.ServiceEntry;
+import com.example.demo.model.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,6 +10,18 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ServiceEntryRepository extends JpaRepository<ServiceEntry, Long> {
+
+    // -----------------------------
+    // Used in test cases
+    // -----------------------------
+
+    List<ServiceEntry> findByVehicleId(Long vehicleId);
+
+    ServiceEntry findTopByVehicleOrderByOdometerReadingDesc(Vehicle vehicle);
+
+    // -----------------------------
+    // Filtering queries
+    // -----------------------------
 
     @Query("""
         SELECT s FROM ServiceEntry s
